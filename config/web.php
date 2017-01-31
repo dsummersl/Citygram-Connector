@@ -2,6 +2,9 @@
 
 $params = require( __DIR__ . '/params.php' );
 
+$mongo_host = empty($_ENV['MONGO_HOST']) ? 'localhost':$_ENV['MONGO_HOST'];
+$mongo_db = empty($_ENV['MONGO_DB']) ? 'citygram':$_ENV['MONGO_DB'];
+
 $config = [
 	'id'           => 'basic',
 	'basePath'     => dirname( __DIR__ ),
@@ -41,7 +44,7 @@ $config = [
 //        'db' => require(__DIR__ . '/db.php'),
 		'mongodb'      => [
 			'class' => '\yii\mongodb\Connection',
-			'dsn'   => 'mongodb://localhost:27017/citygram',
+			'dsn'   => 'mongodb://'. $mongo_host .':27017/'. $mongo_db,
 		],
 		'urlManager'   => [
 			'enablePrettyUrl' => true,

@@ -5,6 +5,9 @@ Yii::setAlias('@tests', dirname(__DIR__) . '/tests');
 $params = require(__DIR__ . '/params.php');
 $db = require(__DIR__ . '/db.php');
 
+$mongo_host = empty($_ENV['MONGO_HOST']) ? 'localhost':$_ENV['MONGO_HOST'];
+$mongo_db = empty($_ENV['MONGO_DB']) ? 'citygram':$_ENV['MONGO_DB'];
+
 return [
     'id' => 'basic-console',
     'basePath' => dirname(__DIR__),
@@ -28,7 +31,7 @@ return [
         'db' => $db,
         'mongodb' => [
             'class' => '\yii\mongodb\Connection',
-            'dsn' => 'mongodb://localhost:27017/citygram',
+            'dsn'   => 'mongodb://'. $mongo_host .':27017/'. $mongo_db,
         ],
         'urlManager' => [
             'baseUrl' => $params['mapUrl'],

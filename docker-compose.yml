@@ -1,0 +1,22 @@
+version: '2'
+services:
+  mongo:
+    image: mongo:3
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_DATABASE: citygram
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+      MYSQL_USER: citygram
+  web:
+    image: citygramconnector_web
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ./yii serve 0.0.0.0
+    environment:
+      MYSQL_HOST: mysql
+      MONGO_HOST: mongo
+    depends_on:
+      - mongo
+      - mysql

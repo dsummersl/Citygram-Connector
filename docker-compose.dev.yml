@@ -1,0 +1,51 @@
+version: '2'
+services:
+  web:
+    restart: always
+    environment:
+      VIRTUAL_HOST: citygram-connector.a.willowdesk.info
+      ZONE: a.willowdesk.info
+    networks:
+      - default
+      - codefordurham-proxy-layer
+  load_durham_police_data:
+    image: citygramconnector_web
+    container_name: load_durham_police_data
+    command: ./yii load PoliceReportDurham 30
+    environment:
+      MYSQL_HOST: mysql
+      MONGO_HOST: mongo
+    depends_on:
+      - mongo
+      - mysql
+  cron_load_police_data:
+    image: jordancrawford/cron-container-starter
+    restart: always
+    cpu_shares: 512
+    mem_limit: 128m
+    environment:
+      CONTAINER_load_durham_police_data: '11 22 * * * '
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+  load_durham_permit_data:
+    image: citygramconnector_web
+    container_name: load_durham_permit_data
+    command: ./yii load PermitReportDurham 30
+    environment:
+      MYSQL_HOST: mysql
+      MONGO_HOST: mongo
+    depends_on:
+      - mongo
+      - mysql
+  cron_load_permit_data:
+    image: jordancrawford/cron-container-starter
+    restart: always
+    cpu_shares: 512
+    mem_limit: 128m
+    environment:
+      CONTAINER_load_durham_permit_data: '11 0 * * * '
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+networks:
+  codefordurham-proxy-layer:
+    external: true
