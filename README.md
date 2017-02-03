@@ -90,6 +90,31 @@ directly under the Web root.
 http://localhost/basic/web/
 ~~~
 
+DOCKER
+------
+
+### Dev Setup
+
+You can use docker-compose to quickly set up a local dev environment:
+
+    # install project dependencies:
+    docker-compose run --rm web composer install
+
+    # Start dev server:
+    docker-compose up
+
+### Deployment
+
+There is a configuration for deploying this application as a staging
+server.
+
+To start:
+
+    # pick the docker server to deploy to:
+    eval "$(docker-machine env NAME)"
+
+    # Deploy docker with development settings:
+    docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
 
 CONFIGURATION
 -------------

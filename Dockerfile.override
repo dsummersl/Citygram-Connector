@@ -5,9 +5,12 @@ RUN apt-get update -qq \
     libcurl4-openssl-dev \
     libssl-dev \
     openssl \
+    unzip \
   && rm -rf /var/lib/apt/lists/*
 RUN pecl install mongodb && docker-php-ext-enable mongodb
-RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer && composer global require "fxp/composer-asset-plugin:~1.1.1"
+RUN curl -sS https://getcomposer.org/installer | php && \
+  mv composer.phar /usr/local/bin/composer && \
+  composer global require "fxp/composer-asset-plugin:~1.1.1"
 
 RUN mkdir /myapp
 WORKDIR /myapp
